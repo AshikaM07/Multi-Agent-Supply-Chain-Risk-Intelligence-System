@@ -1,2 +1,3 @@
-# Multi-Agent-Supply-Chain-Risk-Intelligence-System
-**Multi-Agent Supply Chain Risk Intelligence System** is an AI-driven platform that monitors global news, social media, and logistics data in real time. Smart agents detect risks early, assess impact, recommend alternative suppliers, and automate actions to prevent delays and reduce losses.
+Multi-Agent Supply Chain Risk Intelligence System 🌍📦
+
+An AI-driven system that monitors global news, social media, and logistics data in real time to detect supply chain risks early. Multiple smart agents work together to analyze threats, assess impact, suggest alternative suppliers, and even automate actions—helping companies prevent delays and reduce losses before disruptions occur.
