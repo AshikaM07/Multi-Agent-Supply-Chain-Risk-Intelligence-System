@@ -1,6 +1,6 @@
 ﻿
 from fastapi import FastAPI
-from app.api.health import router as health_router
+from api.api_router import main_api_router
 
 app = FastAPI(
     title="Supply Chain Risk AI",
@@ -8,7 +8,7 @@ app = FastAPI(
 )
 
 # Base API entry
-app.include_router(health_router, prefix="/api")
+app.include_router(main_api_router)
 
 @app.get("/")
 def root():
