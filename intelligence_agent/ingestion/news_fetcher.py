@@ -1,9 +1,9 @@
-import os
+﻿import os
 import requests
 from dotenv import load_dotenv
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-from analyzer import analyze_news
+from analysis_agent.analyzer import analyze_news
 
 load_dotenv()
 
@@ -11,7 +11,7 @@ load_dotenv()
 NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 NEWS_API_URL = os.getenv(
     "NEWS_API_URL",
-    "https://newsapi.org/v2/everything"  # safe default
+    "https://newsapi.org/v2/everything"
 )
 
 if not NEWS_API_KEY:
