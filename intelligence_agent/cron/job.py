@@ -1,5 +1,5 @@
-import logging
-from news_fetcher import fetch_and_store_news
+﻿import logging
+from ingestion.news_fetcher import fetch_and_store_news
 
 logging.basicConfig(
     level=logging.INFO,
