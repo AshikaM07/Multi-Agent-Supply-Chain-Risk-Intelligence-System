@@ -1,23 +1,22 @@
 import os
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from pathlib import Path
 
-load_dotenv()
+ROOT = Path(__file__).resolve().parents[3]
+load_dotenv(ROOT / ".env")
 
-_client = None
+def get_mongo_client():
+    uri = os.getenv("MONGO_URI")
+    if not uri:
+        raise RuntimeError("MONGO_URI not set")
 
-def get_mongo_client() -> MongoClient:
-    global _client
-
-    if _client is None:
-        uri = os.getenv("MONGO_URI")
-        if not uri:
-            raise RuntimeError("MONGO_URI not set in environment")
-
-        _client = MongoClient(
-            uri,
-            maxPoolSize=20,
-            serverSelectionTimeoutMS=5000
-        )
-
-    return _client
+    return MongoClient(
+        uri,
+        serverSelectionTimeoutMS=15000,
+        connectTimeoutMS=15000,
+        socketTimeoutMS=15000,
+        tls=True,
+        tlsAllowInvalidCertificates=False,
+        retryWrites=True
+    )
