@@ -1,0 +1,59 @@
+# =========================
+# Core Backend
+# =========================
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+
+# =========================
+# Database & ORM
+# =========================
+sqlalchemy
+alembic
+psycopg2-binary
+
+# =========================
+# NoSQL / Cache
+# =========================
+redis
+pymongo
+neo4j
+
+# =========================
+# Async & Networking
+# =========================
+httpx
+websockets
+aiofiles
+
+# =========================
+# Auth & Security
+# =========================
+python-jose
+passlib[bcrypt]
+python-multipart
+
+# =========================
+# Background Tasks (Agents)
+# =========================
+celery
+tenacity
+
+# =========================
+# AI / ML (core, lightweight)
+# =========================
+numpy
+scikit-learn
+
+# =========================
+# Logging & Utilities
+# =========================
+loguru
+python-dotenv
+
+# =========================
+# Testing
+# =========================
+pytest
+pytest-asyncio
