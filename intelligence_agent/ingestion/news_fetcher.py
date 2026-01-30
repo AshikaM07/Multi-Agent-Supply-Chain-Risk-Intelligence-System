@@ -1,7 +1,7 @@
 ﻿import os
 import logging
 from datetime import datetime, timedelta
-import requests
+import requests # type: ignore
 from dotenv import load_dotenv
 from pymongo.errors import DuplicateKeyError
 from pydantic import ValidationError
