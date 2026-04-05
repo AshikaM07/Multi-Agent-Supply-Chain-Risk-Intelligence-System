@@ -18,13 +18,18 @@ def detect_supplier(text: str):
 
 
 def analyze_news(article: dict):
-    headline = article.get("title", "")
-    content = article.get("description", "")
-    full_text = f"{headline} {content}"
+    """
+    Convert a news article into a risk decision.
+    """
 
-    supplier_name = detect_supplier(full_text)
+    supplier_name = article.get("supplier_name")
+    headline = article.get("headline", "")
+    content = article.get("content", "")
+
     if not supplier_name:
         return None
+
+    full_text = f"{headline} {content}"
 
     risk_score = calculate_risk_score(full_text)
     supplier_id = get_supplier_id_by_name(supplier_name)
@@ -36,15 +41,10 @@ def analyze_news(article: dict):
     if risk_score >= 70:
         alternatives = plan_alternatives(supplier_id)
 
-    analysis = {
+    return {
         "supplier_name": supplier_name,
         "supplier_id": supplier_id,
         "risk_score": risk_score,
         "alternatives": alternatives,
-        "headline": headline,
-        "analyzed_at": datetime.utcnow(),
-        "raw_article": article
+        "reason": headline
     }
-
-    news_collection.insert_one(analysis)
-    return analysis
