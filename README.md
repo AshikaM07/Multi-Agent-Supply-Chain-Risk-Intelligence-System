@@ -79,5 +79,5 @@ Phase 1 focus ensures a resilient foundation for real-time risk intelligence:
 
 ## 📄 License & Author
 
-**Author**: Built by @AshikaM07  
+**Author**: Built by @pd241008 @jaxcode23  
 **License**: MIT 
