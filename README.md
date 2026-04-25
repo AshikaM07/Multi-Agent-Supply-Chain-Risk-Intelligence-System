@@ -33,7 +33,7 @@ The system utilizes a specialized pipeline designed for maximum resilience:
 3. **AI Backend (Python):** FastAPI orchestrates LLM-powered Analysis Agents that use Neo4j to find alternative suppliers when risks are detected.
 4. **Frontend (Next.js):** A premium TypeScript dashboard provides real-time visibility and one-click mitigation.
 
-👉 **[Read the Full System Architecture Walkthrough](walkthrough.md)**
+
 
 ---
 
@@ -55,7 +55,7 @@ Ensure you have Docker and Docker Compose installed:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/jaxcode23/Multi-Agent-Supply-Chain-Risk-Intelligence-System
+git clone https://github.com/AshikaM07/Multi-Agent-Supply-Chain-Risk-Intelligence-System
 cd Multi-Agent-Supply-Chain-Risk-Intelligence-System
 
 # 2. Set up environment variables
@@ -79,5 +79,5 @@ Phase 1 focus ensures a resilient foundation for real-time risk intelligence:
 
 ## 📄 License & Author
 
-**Author**: Built by @jaxcode23 @pd241008
+**Author**: Built by @pd241008 @jaxcode23  
 **License**: MIT 
