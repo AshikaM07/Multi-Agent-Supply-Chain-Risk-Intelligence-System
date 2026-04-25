@@ -1,83 +1,100 @@
 # 🌍 Multi-Agent Supply Chain Risk Intelligence System
 
-![Python](https://img.shields.io/badge/python-%233776AB.svg?style=for-the-badge&logo=python&logoColor=white)
-![Scala](https://img.shields.io/badge/scala-%23DC322F.svg?style=for-the-badge&logo=scala&logoColor=white)
-![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
-![Next.js](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
-![Neo4j](https://img.shields.io/badge/Neo4j-008CC1?style=for-the-badge&logo=neo4j&logoColor=white)
+[![Go](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://go.dev/)
+[![Scala](https://img.shields.io/badge/Scala-DC322F?style=for-the-badge&logo=scala&logoColor=white)](https://www.scala-lang.org/)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
 
-**Multi-Agent Supply Chain Risk Intelligence System** is an enterprise-grade AI platform designed to monitor global news, social media, and logistics data in real-time to detect and mitigate supply chain disruptions before they happen.
-
-> Global Monitoring → Intelligence Extraction → Automated Risk Mitigation.
+**Multi-Agent Supply Chain Risk Intelligence System** is a polyglot, enterprise-grade AI platform designed to monitor global news, logistics feeds, and supplier data in real-time. It utilizes a resilient RAG (Retrieval-Augmented Generation) pipeline to detect and mitigate supply chain disruptions using specialized agents.
 
 ---
 
-## 🚀 Why This Architecture?
+## 🏗️ System Architecture
 
-Traditional supply chain monitoring often suffers from data loss during peak loads and lacks the flexibility to scale intelligence gathering independently. Our system solves this with a resilient polyglot approach:
+Our system is built on a **High-Resilience Polyglot Pipeline** that ensures zero data loss and independent scaling of intelligence gathering.
 
-- 🛡️ **Zero Single Points of Failure:** If the AI backend times out, the Scala ingestion service continues to catch and store data. No intelligence is ever lost.
-- 📈 **Independent Scaling:** Scale your intelligence gathering to 10,000+ suppliers by simply deploying more scrapers, without affecting the core API or UI.
-- 🧠 **Language Isolation:** We use the best tool for every job: Python for flexible AI/ML, Scala for type-safe high-throughput streams, and TypeScript for a premium UI.
+```mermaid
+graph TD
+    subgraph "Ingestion Layer (Go)"
+        A[Web Feeds] --> B[Go Scraping Gateway]
+        C[Logistics APIs] --> B
+        B -->|gRPC Stream| D[Scala Processing Hub]
+    end
 
----
+    subgraph "Processing Layer (Scala)"
+        D -->|Normalizing| E[Text Chunking]
+        E -->|Batch Upsert| F[(ChromaDB)]
+    end
 
-## 🏗️ How it Works
+    subgraph "Reasoning Layer (Python)"
+        G[Analysis Agent] -->|Semantic Query| F
+        F -->|Context| G
+        G -->|Decision| H[Mitigation Strategy]
+    end
 
-The system utilizes a specialized pipeline designed for maximum resilience:
-
-1. **Scrapers (Python):** Native Playwright/Scrapy extractors gather unstructured text from web and logistics feeds.
-2. **Ingestion (Scala):** A high-throughput JVM pipeline validates and cleanses data before buffering it into MongoDB.
-3. **AI Backend (Python):** FastAPI orchestrates LLM-powered Analysis Agents that use Neo4j to find alternative suppliers when risks are detected.
-4. **Frontend (Next.js):** A premium TypeScript dashboard provides real-time visibility and one-click mitigation.
-
-
-
----
-
-## 📂 Repository Structure
-
-The repository is organized into distinct microservice directories to ensure clean dependencies and easy orchestration:
-
-- `frontend/` — UI Layer (Next.js / Tailwind / TypeScript)
-- `backend/` — AI Orchestration & API Gateway (FastAPI)
-- `scrapers/` — Intelligence Gathering (Python Spiders)
-- `ingestion/` — Data Pipeline (Scala / JVM)
-- `infrastructure/` — DevOps (Docker Compose, Seed Scripts)
-
----
-
-## 🚀 Getting Started
-
-Ensure you have Docker and Docker Compose installed:
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/AshikaM07/Multi-Agent-Supply-Chain-Risk-Intelligence-System
-cd Multi-Agent-Supply-Chain-Risk-Intelligence-System
-
-# 2. Set up environment variables
-cp .env.example .env
-
-# 3. Launch the enterprise stack
-docker-compose up -d
+    subgraph "Management (Rust & TS)"
+        I[Rust Runner] -->|Orchestrates| A
+        I -->|Orchestrates| D
+        I -->|Orchestrates| G
+        J[Next.js Dashboard] -->|Observes| H
+    end
 ```
 
 ---
 
-## 🎯 Target MVP Scope
+## 🚀 The Stack: Why Polyglot?
 
-Phase 1 focus ensures a resilient foundation for real-time risk intelligence:
-- ✅ **Dynamic Ingestion:** Real-time news processing using the Scala pipeline.
-- ✅ **Risk Scoring Agent:** Automated LLM-based threat assessment.
-- ✅ **Alternative Sourcing:** Active Neo4j graph traversal for supplier redundancy.
-- ✅ **Unified Dashboard:** Real-time visualization of supply chain health.
+1.  **Go (Ingestion Gateway)**: Chosen for its **concurrency primitives** (goroutines/channels) and memory efficiency. It handles "bulletproof" scraping with per-domain rate limiting and worker pools.
+2.  **Scala (Processing Hub)**: Leverages **ZIO & Akka** for type-safe, high-throughput stream processing. It handles the heavy lifting of normalization, sliding-window chunking, and vector DB interfacing.
+3.  **Python (AI Reasoning)**: The industry standard for **LLM Orchestration**. Our Analysis Agents use FastAPI to query ChromaDB and generate structured risk assessments.
+4.  **Rust (System Orchestrator)**: A high-performance **Runner** that manages the lifecycle of all services, handling cross-platform command resolution (Windows/Linux) with zero hardcoding.
+5.  **TypeScript (Unified UI)**: A premium Next.js dashboard providing real-time visibility into the risk pipeline.
+
+---
+
+## 🔧 Core Components
+
+### 🛡️ Go Scraping Gateway
+Located in `/scrapers`, this engine uses a **Section Worker** pattern. A master task spawns workers to "hop" between different DOM sections, managed via Go Contexts for safe cancellation.
+*   **Resilience**: Built-in User-Agent rotation and randomized request jitter.
+*   **Transport**: Streams structured Protobuf payloads over HTTP/2 (gRPC) to minimize latency.
+
+### 🧠 Scala Processing Hub
+Located in `/ingestion`, this service acts as the central data intake.
+*   **Pipeline**: Receives raw text → performs **text chunking (1000 chars / 200 overlap)** → triggers embedding generation → batch upserts to **ChromaDB**.
+*   **Concurrency**: Built with ZIO Streams for non-blocking I/O.
+
+### 🤖 AI Agent Layer
+Located in `/backend`, this layer performs the semantic reasoning.
+*   **RAG Workflow**: When a risk is detected, the agent queries ChromaDB for historical context and similar disruptions before proposing alternative suppliers via **Neo4j**.
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Prerequisites
+*   Go 1.21+
+*   SBT (Scala Build Tool)
+*   Python 3.10+
+*   Rust / Cargo (for the Runner)
+*   Docker (for Vector DBs)
+
+### 2. Launching the Stack
+We provide a unified **Rust Runner** to orchestrate the polyglot services.
+
+```bash
+# Clone the repository
+git clone https://github.com/jaxcode23/Multi-Agent-Supply-Chain-Risk-Intelligence-System.git
+cd Multi-Agent-Supply-Chain-Risk-Intelligence-System
+
+# Start all services (Go, Scala, Python, Next.js)
+cd runner
+cargo run
+```
 
 ---
 
 ## 📄 License & Author
 
-**Author**: Built by @pd241008 @jaxcode23  
+**Author**: Built by [@jaxcode23](https://github.com/jaxcode23) and [@pd241008](https://github.com/pd241008)  
 **License**: MIT 
