@@ -7,3 +7,5 @@ __pycache__/
 
 runner/cs/
 *.exe
+
+*.egg-info/
